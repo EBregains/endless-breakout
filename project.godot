@@ -22,6 +22,14 @@ window/size/viewport_height=1920
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
+[layer_names]
+
+2d_physics/layer_1="Paredes"
+2d_physics/layer_2="Paddle"
+2d_physics/layer_3="Pelota"
+2d_physics/layer_4="Ladrillos"
+2d_physics/layer_5="GameOverArea"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

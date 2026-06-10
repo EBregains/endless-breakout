@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://dm4rh8a0k32c0"]
+
+[ext_resource type="PackedScene" uid="uid://3o8nepktsysi" path="res://scenes/ball.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://bre0iyv8m2uqp" path="res://scenes/paddle.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://3tr0cw127lx7" path="res://scripts/main.gd" id="1_sugp2"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_o5qli"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0wfyh"]
+normal = Vector2(-1, 0)
+distance = -1080.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
+size = Vector2(1200, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
+size = Vector2(1200, 300)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jyhfs"]
+font_size = 48
+
+[node name="Main" type="Node2D" unique_id=2077291913 node_paths=PackedStringArray("GameOverOverlay")]
+script = ExtResource("1_sugp2")
+GameOverOverlay = NodePath("GameOverOverlay/GameOverOverlayControl")
+
+[node name="Ball" parent="." unique_id=775837606 instance=ExtResource("1_0wfyh")]
+position = Vector2(542, 939)
+
+[node name="Paddle" parent="." unique_id=1129403531 instance=ExtResource("1_o5qli")]
+position = Vector2(540, 1700)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1422765768]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1725555550]
+shape = SubResource("WorldBoundaryShape2D_o5qli")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1407768070]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1257248693]
+shape = SubResource("WorldBoundaryShape2D_0wfyh")
+
+[node name="UpperWall" type="StaticBody2D" parent="." unique_id=73428374]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperWall" unique_id=407834017]
+position = Vector2(539, -145)
+shape = SubResource("RectangleShape2D_0wfyh")
+
+[node name="GameOverArea" type="Area2D" parent="." unique_id=2048340154]
+position = Vector2(550, 2063)
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameOverArea" unique_id=1461443592]
+position = Vector2(0, -17)
+shape = SubResource("RectangleShape2D_sugp2")
+debug_color = Color(0.9866454, 0.11510334, 0, 0.41960785)
+
+[node name="GameOverOverlay" type="CanvasLayer" parent="." unique_id=1324270855]
+process_mode = 3
+
+[node name="GameOverOverlayControl" type="Control" parent="GameOverOverlay" unique_id=780846995]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="GameOverOverlay/GameOverOverlayControl" unique_id=1676510586]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverOverlay/GameOverOverlayControl" unique_id=1339789117]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -62.0
+offset_right = 130.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="GameOverOverlay/GameOverOverlayControl/VBoxContainer" unique_id=1948445306]
+layout_mode = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_jyhfs")
+
+[node name="RetryButton" type="Button" parent="GameOverOverlay/GameOverOverlayControl/VBoxContainer" unique_id=805329210]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Try Agian
+"
+
+[connection signal="body_entered" from="GameOverArea" to="." method="_on_game_over_area_body_entered"]
+[connection signal="button_up" from="GameOverOverlay/GameOverOverlayControl/VBoxContainer/RetryButton" to="." method="_on_retry_button_button_up"]
